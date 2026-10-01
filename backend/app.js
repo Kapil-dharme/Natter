@@ -16,8 +16,12 @@ const port = process.env.PORT || 3000;
 
 app.set("trust proxy", 1);
 
-app.get("/health", (req, res) => {
-    return res.status(200).json({ status: "ok" });
+app.get('/api/health', (req, res) => {
+  res.json({
+    status: 'OK',
+    message: 'Your API is running',
+    timestamp: new Date().toISOString()
+  });
 });
 
 app.use(cookieParser());
