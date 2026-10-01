@@ -1,0 +1,9 @@
+.wrap {
+  position: absolute;
+  bottom: 72px;
+  left: 16px;
+  z-index: 50;
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  box-shadow: var(--shadow-overlay);
+}

@@ -1,0 +1,83 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Natter — Offline</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            background: #ffffff;
+            color: #1a1a2e;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: 100vh;
+            text-align: center;
+            padding: 2rem;
+        }
+
+        .container {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 1.5rem;
+        }
+
+        svg {
+            opacity: 0.9;
+        }
+
+        h1 {
+            font-size: 1.5rem;
+            font-weight: 700;
+            color: #0058be;
+        }
+
+        p {
+            font-size: 0.95rem;
+            color: #666;
+            max-width: 280px;
+            line-height: 1.6;
+        }
+
+        button {
+            margin-top: 0.5rem;
+            padding: 0.75rem 2rem;
+            background: #0058be;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            font-size: 0.95rem;
+            font-weight: 600;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background: #0046a0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <svg viewBox="0 0 48 48" width="64" height="64" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect x="2" y="2" width="44" height="44" rx="14" fill="#0058be"/>
+            <path d="M13 31V17C13 15.895 13.895 15 15 15H17L31 29V17" stroke="white" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M31 29L35 33" stroke="white" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/>
+            <path d="M17 33H14C12.343 33 11 31.657 11 30V27" stroke="white" stroke-width="3.4" stroke-linecap="round"/>
+        </svg>
+
+        <h1>Oops ! You are offline</h1>
+
+        <p>Please check your internet connection and try again.</p>
+
+        <button onclick="window.location.reload()">Try Again</button>
+    </div>
+</body>
+</html>

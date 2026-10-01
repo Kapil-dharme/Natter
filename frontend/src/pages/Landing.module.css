@@ -1,0 +1,518 @@
+.page {
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  background: var(--bg);
+}
+
+.nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 16px 48px;
+  border-bottom: 1px solid var(--surface-high);
+  background: var(--surface);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.logo {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+.logoIcon {
+  width: 35px;
+  height: 35px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+  border-radius: 10px;
+  background: #0058be;
+  box-shadow: 0 5px 16px rgba(66, 120, 171, 0.25);
+  cursor: pointer;
+}
+.logoText {
+  font-size: 18px;
+  font-weight: 700;
+  color: var(--on-surface);
+}
+
+.navActions {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.navLogin {
+  padding: 8px 20px;
+  color: var(--on-surface-variant);
+  font-size: 14px;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  transition: background 0.15s;
+}
+.navLogin:hover {
+  background: var(--surface-low);
+}
+
+.navSignup {
+  padding: 8px 20px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-size: 14px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: var(--radius-md);
+  transition: background 0.15s;
+}
+.navSignup:hover {
+  background: var(--primary-hover);
+}
+
+.hero {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  padding: 64px 24px 48px;
+  text-align: center;
+}
+
+.heroTitle {
+  font-size: 56px;
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.03em;
+  color: var(--on-surface);
+  max-width: 700px;
+}
+
+.heroSub {
+  font-size: 18px;
+  color: var(--on-surface-variant);
+  margin-top: 20px;
+  max-width: 520px;
+  line-height: 1.6;
+}
+
+.heroActions {
+  display: flex;
+  gap: 16px;
+  margin-top: 32px;
+}
+
+.ctaPrimary {
+  padding: 14px 28px;
+  background: var(--primary);
+  color: var(--on-primary);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: var(--radius-full);
+  transition:
+    background 0.15s,
+    transform 0.1s;
+}
+.ctaPrimary:hover {
+  background: var(--primary-hover);
+  transform: translateY(-1px);
+}
+
+.ctaSecondary {
+  padding: 14px 28px;
+  background: var(--surface);
+  color: var(--on-surface);
+  font-size: 15px;
+  font-weight: 600;
+  text-decoration: none;
+  border-radius: var(--radius-full);
+  border: 1px solid var(--outline-variant);
+  transition: background 0.15s;
+}
+.ctaSecondary:hover {
+  background: var(--surface-low);
+}
+
+.demoShell {
+  margin-top: 48px;
+  width: 100%;
+  max-width: 800px;
+  background: var(--surface);
+  border-radius: var(--radius-lg);
+  border: 1px solid var(--surface-high);
+  box-shadow: var(--shadow-overlay);
+  overflow: hidden;
+}
+
+.demoBar {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  padding: 10px 16px;
+  background: var(--surface-low);
+  border-bottom: 1px solid var(--surface-high);
+}
+.dot {
+  width: 12px;
+  height: 12px;
+  border-radius: 50%;
+}
+.demoLabel {
+  font-size: 12px;
+  color: var(--outline);
+  margin-left: 8px;
+}
+
+.demoBody {
+  display: flex;
+  height: 420px;
+}
+
+.demoSidebar {
+  width: 220px;
+  border-right: 1px solid var(--surface-high);
+  padding: 12px;
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  flex-shrink: 0;
+}
+
+.demoSearch {
+  padding: 8px 12px;
+  background: var(--surface-low);
+  border-radius: var(--radius-full);
+  font-size: 12px;
+  color: var(--outline);
+  border: 1px solid var(--outline-variant);
+}
+
+.demoItem {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 10px 8px;
+  border-radius: var(--radius-md);
+  cursor: default;
+}
+.demoItemActive {
+  background: var(--primary-fixed);
+}
+
+.demoAvatar {
+  width: 38px;
+  height: 38px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 14px;
+  font-weight: 700;
+  flex-shrink: 0;
+}
+.demoName {
+  font-size: 13px;
+  font-weight: 600;
+  color: var(--on-surface);
+}
+.demoPreview {
+  font-size: 11px;
+  color: var(--outline);
+  margin-top: 2px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  max-width: 130px;
+}
+
+.demoChat {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+}
+
+.demoChatHeader {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  padding: 12px 16px;
+  border-bottom: 1px solid var(--surface-high);
+  flex-shrink: 0;
+}
+
+.demoChatMessages {
+  flex: 1;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  overflow-y: auto;
+}
+
+.demoBubbleIn {
+  align-self: flex-start;
+  background: var(--surface-high);
+  padding: 10px 14px;
+  border-radius: 16px 16px 16px 4px;
+  font-size: 13px;
+  max-width: 70%;
+  text-align: left;
+  color: var(--on-surface);
+}
+
+.demoBubbleOut {
+  align-self: flex-end;
+  background: var(--primary);
+  color: white;
+  padding: 10px 14px;
+  border-radius: 16px 16px 4px 16px;
+  font-size: 13px;
+  max-width: 70%;
+  text-align: left;
+}
+
+.demoTime {
+  font-size: 10px;
+  opacity: 0.6;
+  margin-top: 4px;
+}
+
+.demoChatInputWrap {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  padding: 10px 14px;
+  border-top: 1px solid var(--surface-high);
+  background: var(--surface);
+  flex-shrink: 0;
+}
+
+.demoChatInputField {
+  flex: 1;
+  border: 1px solid var(--outline-variant);
+  border-radius: var(--radius-full);
+  padding: 8px 14px;
+  font-size: 13px;
+  color: var(--on-surface);
+  background: var(--surface-low);
+  outline: none;
+  font-family: var(--font);
+  transition:
+    box-shadow 0.15s,
+    border-color 0.15s;
+}
+.demoChatInputField::placeholder {
+  color: var(--outline);
+}
+.demoChatInputField:focus {
+  border-color: transparent;
+  box-shadow: 0 0 0 2px var(--primary);
+}
+
+.demoSendBtn {
+  width: 34px;
+  height: 34px;
+  border-radius: 50%;
+  border: none;
+  background: var(--primary);
+  color: white;
+  font-size: 14px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  cursor: pointer;
+  flex-shrink: 0;
+  transition: background 0.15s;
+}
+.demoSendBtn:hover {
+  background: var(--primary-hover);
+}
+
+.footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px 48px;
+  border-top: 1px solid var(--surface-high);
+  background: var(--surface);
+}
+
+.footerLeft {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.footerLinks {
+  display: flex;
+  gap: 24px;
+}
+.footerLinks a {
+  font-size: 13px;
+  color: var(--on-surface-variant);
+  text-decoration: none;
+}
+.footerLinks a:hover {
+  color: var(--on-surface);
+}
+
+@media (max-width: 768px) {
+  .nav {
+    padding: 12px 20px;
+  }
+  .logoText {
+    display: none;
+  }
+  .heroTitle {
+    font-size: 36px;
+  }
+  .heroSub {
+    font-size: 15px;
+  }
+  .heroActions {
+    flex-direction: column;
+    width: 100%;
+    max-width: 320px;
+  }
+  .ctaPrimary,
+  .ctaSecondary {
+    text-align: center;
+  }
+  .demoSidebar {
+    display: none;
+  }
+  .footer {
+    flex-direction: column;
+    gap: 16px;
+    padding: 20px;
+    text-align: center;
+  }
+  .footerLinks {
+    flex-wrap: wrap;
+    justify-content: center;
+    gap: 16px;
+  }
+}
+
+@media (max-width: 480px) {
+  .heroTitle {
+    font-size: 28px;
+  }
+  .hero {
+    padding: 40px 20px 32px;
+  }
+}
+.ctaInstall {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  gap: 0.5rem;
+  padding: 0.75rem 1.5rem;
+  background: transparent;
+  color: #0058be;
+  border: 2px solid #0058be;
+  border-radius: 12px;
+  font-size: 0.95rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.ctaInstall:hover {
+  background: #0058be;
+  color: white;
+}
+
+.installBanner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  background: #ffffff;
+  border: 1.5px solid #e0e8f7;
+  border-radius: 16px;
+  padding: 1rem 1.25rem;
+  box-shadow: 0 4px 24px rgba(0, 88, 190, 0.08);
+  width: 100%;
+  max-width: 540px;
+  margin: 0 auto;
+}
+
+.installBannerLeft {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.installBannerText {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15rem;
+}
+
+.installBannerTitle {
+  font-size: 0.95rem;
+  font-weight: 700;
+  color: #1a1a2e;
+}
+
+.installBannerSub {
+  font-size: 0.8rem;
+  color: #666;
+}
+
+.installBannerActions {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  flex-shrink: 0;
+}
+
+.installBannerDismiss {
+  padding: 0.5rem 0.75rem;
+  background: transparent;
+  border: none;
+  font-size: 0.85rem;
+  color: #666;
+  cursor: pointer;
+  border-radius: 8px;
+  transition: background 0.15s;
+}
+
+.installBannerDismiss:hover {
+  background: #f5f5f5;
+}
+
+.installBannerBtn {
+  padding: 0.5rem 1.25rem;
+  background: #0058be;
+  color: white;
+  border: none;
+  border-radius: 8px;
+  font-size: 0.85rem;
+  font-weight: 600;
+  cursor: pointer;
+  transition: background 0.15s;
+}
+
+.installBannerBtn:hover {
+  background: #0046a0;
+}
+
+@media (max-width: 480px) {
+  .installBanner {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+
+  .installBannerActions {
+    width: 100%;
+    justify-content: flex-end;
+  }
+}
