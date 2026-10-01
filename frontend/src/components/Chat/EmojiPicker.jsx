@@ -1,6 +1,6 @@
 import { useEffect, useRef } from 'react';
-import data from '@emoji-mart/data';
-import Picker from '@emoji-mart/react';
+import data from '@slidoapp/emoji-mart-data';
+import Picker from '@slidoapp/emoji-mart-react';
 import styles from './EmojiPicker.module.css';
 
 export default function EmojiPickerPopup({ onSelect, onClose }) {
