@@ -8,6 +8,7 @@ import Register from './pages/Register';
 import Login from './pages/Login';
 import VerifyOtp from './pages/VerifyOtp';
 import Chat from './pages/Chat';
+import { Analytics } from '@vercel/analytics/react';
 
 function SocketInit() {
   useSocket();
@@ -39,6 +40,7 @@ export default function App() {
     <BrowserRouter>
       <AuthProvider>
         <AppRoutes />
+        <Analytics />
       </AuthProvider>
     </BrowserRouter>
   );
