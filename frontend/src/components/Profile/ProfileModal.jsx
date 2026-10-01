@@ -6,7 +6,7 @@ import {
     enablePushNotifications,
     disablePushNotifications,
     isPushEnabled
-} from '../../utils/pushNotifications';
+} from '../../utils/pushnotifications';
 
 export default function ProfileModal({ onClose }) {
     const { user, updateUser } = useAuth();

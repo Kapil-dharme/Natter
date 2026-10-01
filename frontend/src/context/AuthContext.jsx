@@ -4,7 +4,7 @@ import api from '../api/axios';
 
 import {
   enablePushNotifications,
-} from '../utils/pushNotifications';
+} from '../utils/pushnotifications';
 
 import NotificationPrompt from '../components/NotificationPromt';
 
