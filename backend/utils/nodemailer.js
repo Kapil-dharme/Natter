@@ -7,7 +7,7 @@ const client = new AgentMailClient({
     apiKey: process.env.AGENTMAIL_API_KEY,
 });
 
-const INBOX_ID = "kapil-6808@agentmail.to";
+const INBOX_ID = "natter@agentmail.to";
 
 export const sendOTP = async (to, otp) => {
     try {
