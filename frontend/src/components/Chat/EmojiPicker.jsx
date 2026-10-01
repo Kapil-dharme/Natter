@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react';
-import data from '@slidoapp/emoji-mart-data';
+import data from '@emoji-mart/data';
 import Picker from '@slidoapp/emoji-mart-react';
 import styles from './EmojiPicker.module.css';
 
