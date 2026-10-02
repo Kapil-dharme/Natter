@@ -4,9 +4,21 @@ import styles from './ConversationList.module.css';
 
 function formatTime(dateStr) {
   if (!dateStr) return '';
-  const d = new Date(dateStr), now = new Date();
-  if (d.toDateString() === now.toDateString()) return d.toLocaleTimeString([], { hour: '2-digit', minute: '2-digit' });
-  return d.toLocaleDateString([], { weekday: 'short' });
+
+  const d = new Date(dateStr);
+  const now = new Date();
+
+  if (d.toDateString() === now.toDateString()) {
+    return d.toLocaleTimeString([], {
+      hour: '2-digit',
+      minute: '2-digit',
+      hour12: true
+    });
+  }
+
+  return d.toLocaleDateString([], {
+    weekday: 'short'
+  });
 }
 
 export default function ConversationList({ conversations, activeConversation, onSelect, unreadMap, onlineUsers }) {
