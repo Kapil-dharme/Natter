@@ -44,11 +44,9 @@ api.interceptors.response.use(
     ) {
       return Promise.reject(error);
     }
-
     if (
       originalRequest?.url?.includes('/auth/refresh') ||
-      originalRequest?.url?.includes('/auth/login-user') ||
-      originalRequest?.url?.includes('/auth/me')
+      originalRequest?.url?.includes('/auth/login-user')
     ) {
       return Promise.reject(error);
     }
