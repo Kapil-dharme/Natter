@@ -13,8 +13,9 @@ function formatTime(d) {
   if (!d) return '';
 
   return new Date(d).toLocaleTimeString([], {
-    hour: '2-digit',
-    minute: '2-digit'
+    hour: 'numeric',
+    minute: '2-digit',
+    hour12: true
   });
 }
 
