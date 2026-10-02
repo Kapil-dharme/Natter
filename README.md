@@ -2,7 +2,7 @@
 
 A full-stack, end-to-end encrypted real-time chat application built with Node.js, Socket.io, Redis, and React.
 
-**Live demo:** [natter.vercel.app](https://portfolio-red-phi-48.vercel.app/)
+**Live demo:** [natter.vercel.app](https://natter-lake.vercel.app/)
 
 ---
 
