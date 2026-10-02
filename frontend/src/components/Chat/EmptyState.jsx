@@ -28,7 +28,6 @@ export default function EmptyState() {
   return (
     <div className={styles.wrap}>
 
-      {/* User menu */}
       <div
         style={{
           position: 'absolute',
@@ -50,7 +49,6 @@ export default function EmptyState() {
           }}
         >
 
-          {/* User avatar */}
           {user?.profileURL ? (
             <img
               src={user.profileURL}
@@ -59,7 +57,8 @@ export default function EmptyState() {
                 width: 28,
                 height: 28,
                 borderRadius: '50%',
-                objectFit: 'cover'
+                objectFit: 'cover',
+                objectPosition:'top'
               }}
             />
           ) : (
@@ -81,7 +80,6 @@ export default function EmptyState() {
             </div>
           )}
 
-          {/* Username */}
           <span
             style={{
               fontSize: 13,
@@ -92,7 +90,6 @@ export default function EmptyState() {
             {user?.userName}
           </span>
 
-          {/* Dropdown arrow */}
           <span
             style={{
               fontSize: 10,
@@ -103,7 +100,6 @@ export default function EmptyState() {
           </span>
         </div>
 
-        {/* Dropdown */}
         {showDropdown && (
           <div
             style={{
@@ -120,7 +116,6 @@ export default function EmptyState() {
             }}
           >
 
-            {/* Profile */}
             <button
               type="button"
               onClick={handleProfile}
