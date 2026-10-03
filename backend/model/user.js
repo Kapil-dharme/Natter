@@ -58,7 +58,8 @@ const userSchema = new mongoose.Schema({
 
     unverifiedExpiry: {
         type: Date,
-        default: null
+        default: null,
+        expires: 0
     },
 
     lastOtpSentAt: {

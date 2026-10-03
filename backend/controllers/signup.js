@@ -102,7 +102,7 @@ export const signupUser = async (req, res) => {
         const OTP = crypto.randomInt(100000, 1000000);
         const otpExpiry = new Date(Date.now() + 2 * 60 * 1000);
         const unverifiedExpiry = new Date(
-            Date.now() + 30 * 60 * 1000
+            Date.now() + 10 * 60 * 1000
         );
         const lastOtpSentAt = new Date();
 
