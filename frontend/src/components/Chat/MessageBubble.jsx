@@ -344,22 +344,8 @@ export default function MessageBubble({
 
       let movement = 0;
 
-      if (isOwn) {
-        if (deltaX < 0) {
-          movement =
-            Math.max(
-              deltaX,
-              -80
-            );
-        }
-      } else {
-        if (deltaX > 0) {
-          movement =
-            Math.min(
-              deltaX,
-              80
-            );
-        }
+      if (deltaX > 0) {
+        movement = Math.min(deltaX, 80);
       }
 
       currentSwipeX.current =
@@ -631,27 +617,21 @@ export default function MessageBubble({
                 {message.replyTo.unavailable ? (
                   'This message is no longer available'
                 ) : message.replyTo.type === 'text' ? (
-                  message.replyTo.content
+                  <span className={styles.replyText}>
+                    {message.replyTo.content}
+                  </span>
                 ) : message.replyTo.type === 'image' ? (
-                  <div
-                    className={
-                      styles.replyImagePreview
-                    }
-                  >
-                    <img
-                      src={
-                        message.replyTo.content
-                      }
-                      alt="Replied image"
-                    />
+                  <div className={styles.replyImagePreview}>
+                    <img src={message.replyTo.content} alt="Replied image" />
                     <span>Image</span>
                   </div>
                 ) : (
-                  <>
+                  <div className={styles.replyFile}>
                     <FileText size={15} />
-                    {message.replyTo.fileName ||
-                      'File'}
-                  </>
+                    <span className={styles.replyFileName}>
+                      {message.replyTo.fileName || 'File'}
+                    </span>
+                  </div>
                 )}
               </div>
             </div>

@@ -193,18 +193,28 @@
 .clearBtn {
   position: absolute;
   right: 22px;
-  top: 50%;
-  transform: translateY(-60%);
+  top: calc(50% - 5px);
+  transform: translateY(-50%);
+
+  width: 22px;
+  height: 22px;
+  padding: 0;
+  border-radius: 50%;
+
+  display: flex;
+  align-items: center;
+  justify-content: center;
+
   background: none;
   border: none;
   color: var(--outline);
   font-size: 12px;
-  cursor: pointer;
-  padding: 4px;
   line-height: 1;
+  cursor: pointer;
 }
 .clearBtn:hover {
   color: var(--on-surface);
+  background: var(--surface-high);
 }
 .mobileProfile {
   display: none;

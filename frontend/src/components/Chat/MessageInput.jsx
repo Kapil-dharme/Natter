@@ -129,15 +129,9 @@ export default function MessageInput({
     return message.content || '';
   }
 
-  function truncateText(
-    value,
-    maxLength = 80
-  ) {
+  function truncateText(value, maxLength = 100) {
     if (!value) return '';
-
-    return value.length > maxLength
-      ? `${value.slice(0, maxLength)}...`
-      : value;
+    return value.length > maxLength ? value.slice(0, maxLength) : value;
   }
 
   function getReplySender(message) {

@@ -240,19 +240,6 @@
   -webkit-user-select: none;
 }
 
-.replyMessage {
-  margin-bottom: 6px;
-  padding: 7px 9px;
-  border-left: 3px solid currentColor;
-  border-radius: 6px;
-  background: rgba(0, 0, 0, 0.12);
-  max-width: 100%;
-  overflow: hidden;
-  cursor: pointer;
-  user-select: none;
-  -webkit-user-select: none;
-}
-
 .replyMessageName {
   font-size: 11px;
   font-weight: 600;
@@ -262,18 +249,57 @@
   -webkit-user-select: none;
 }
 
+.replyMessage {
+  margin-bottom: 6px;
+  padding: 7px 9px;
+  border-left: 3px solid currentColor;
+  border-radius: 6px;
+  background: rgba(0, 0, 0, 0.12);
+  max-width: 100%;
+  min-width: 0;
+  overflow: hidden;
+  cursor: pointer;
+  user-select: none;
+  -webkit-user-select: none;
+}
+
 .replyMessageContent {
   font-size: 12px;
   line-height: 1.35;
   opacity: 0.75;
+  display: block; /* was flex */
+  min-width: 0;
+  overflow: hidden;
+}
+
+/* text quote: ONE line, then "..." */
+.replyText {
+  display: block;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
+}
+
+/* file quote: icon + name on one line */
+.replyFile {
   display: flex;
   align-items: center;
   gap: 5px;
-  user-select: none;
-  -webkit-user-select: none;
+  min-width: 0;
+}
+.replyFile svg {
+  flex-shrink: 0;
+}
+.replyFileName {
+  flex: 1;
+  min-width: 0;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.replyMessageContent svg {
+  flex-shrink: 0;
 }
 
 .replyMessage:hover {
