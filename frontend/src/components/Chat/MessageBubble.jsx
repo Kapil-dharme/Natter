@@ -51,27 +51,51 @@ function renderTextWithLinks(text) {
   });
 }
 
+const OFFICE_EXT = ['doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx'];
+
+function getPreviewUrl(url = '') {
+  const ext = url.split('?')[0].split('.').pop().toLowerCase();
+
+  if (OFFICE_EXT.includes(ext)) {
+    return `https://view.officeapps.live.com/op/view.aspx?src=${encodeURIComponent(url)}`;
+  }
+  return url;
+}
+
+function attachmentUrl(url = '') {
+  return /\/(image|video)\/upload\//.test(url)
+    ? url.replace('/upload/', '/upload/fl_attachment/')
+    : url;
+}
+
 async function handleFileDownload(e, url, fileName) {
   e.stopPropagation();
   e.preventDefault();
 
+  const fromUrl = decodeURIComponent(
+    (url || '').split('?')[0].split('/').pop() || ''
+  );
+
   try {
     const response = await fetch(url);
     const blob = await response.blob();
-
     const blobUrl = URL.createObjectURL(blob);
 
     const a = document.createElement('a');
     a.href = blobUrl;
-    a.download = fileName || 'download';
+    a.download = fileName || fromUrl || 'download';
 
     document.body.appendChild(a);
     a.click();
     a.remove();
-
     URL.revokeObjectURL(blobUrl);
   } catch {
-    window.open(url, '_blank');
+    const a = document.createElement('a');
+    a.href = attachmentUrl(url);
+    a.download = '';
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
   }
 }
 
@@ -658,8 +682,7 @@ export default function MessageBubble({
                 handleFileDownload(
                   e,
                   message.content,
-                  message.fileName ||
-                  'image.jpg'
+                  message.fileName
                 )
               }
             >
@@ -685,7 +708,7 @@ export default function MessageBubble({
               }
             >
               <a
-                href={message.content}
+                href={getPreviewUrl(message.content)}
                 target="_blank"
                 rel="noreferrer"
                 className={`${styles.fileAction} ${isOwn

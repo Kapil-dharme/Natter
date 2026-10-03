@@ -1,7 +1,7 @@
 import mongoose from "mongoose";
 import { User } from "../model/user.js";
 
-const mongoURI = process.env.MONGODBURI;
+const mongoURI ="mongodb://localhost:27017/NATTER"|| process.env.MONGODBURI;
 
 export const connectToMongodb = async () => {
     try {

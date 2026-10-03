@@ -9,6 +9,10 @@ const MB = 1024 * 1024;
 const MAX_IMAGE = 10 * MB;
 const MAX_FILE = 10 * MB;
 
+const IMAGE_EXT = ['jpg', 'jpeg', 'png', 'webp', 'gif'];
+const FILE_EXT = ['pdf', 'doc', 'docx', 'xls', 'xlsx', 'ppt', 'pptx', 'txt'];
+const getExt = (name = '') => (name.includes('.') ? name.split('.').pop().toLowerCase() : '');
+
 async function compressImage(file, maxDim = 2048, quality = 0.85) {
   if (file.type === 'image/gif' || file.size < 2 * MB) return file;
   try {
@@ -126,6 +130,17 @@ export default function MessageInput({
     e.target.value = '';
     setShowAttach(false);
 
+    const ext = getExt(file.name);
+    if (!IMAGE_EXT.includes(ext)) {
+      showError(`Unsupported image (.${ext || '?'})`);
+      return;
+    }
+
+    if (file.size > 50 * MB) {
+      showError(`Image too large (${(file.size / MB).toFixed(0)} MB). Max 10 MB.`);
+      return;
+    }
+
     file = await compressImage(file);
 
     if (file.size > MAX_IMAGE) {
@@ -143,8 +158,14 @@ export default function MessageInput({
     e.target.value = '';
     setShowAttach(false);
 
+    const ext = getExt(file.name);
+    if (!FILE_EXT.includes(ext)) {
+      showError(`Unsupported file (.${ext || '?'})`);
+      return;
+    }
+
     if (file.size > MAX_FILE) {
-        showError(`File too large (${(file.size / MB).toFixed(1)} MB). Max 10 MB.`);
+      showError(`File too large (${(file.size / MB).toFixed(1)} MB). Max 10 MB.`);
       return;
     }
 
@@ -244,7 +265,7 @@ export default function MessageInput({
       <input
         ref={imageRef}
         type="file"
-        accept="image/*"
+        accept="image/jpeg,image/png,image/webp,image/gif"
         style={{ display: 'none' }}
         onChange={handleImageChange}
       />
@@ -252,6 +273,7 @@ export default function MessageInput({
       <input
         ref={fileRef}
         type="file"
+        accept=".pdf,.doc,.docx,.xls,.xlsx,.ppt,.pptx,.txt"
         style={{ display: 'none' }}
         onChange={handleFileChange}
       />
