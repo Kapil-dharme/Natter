@@ -76,3 +76,18 @@ select {
   --text-secondary: #424754;
   --font-serif: "Fraunces", serif;
 }
+html,
+body {
+  touch-action: pan-x pan-y;
+  overflow-x: hidden;
+  -webkit-text-size-adjust: 100%;
+  text-size-adjust: 100%;
+}
+
+@media (max-width: 768px) {
+  input,
+  textarea,
+  select {
+    font-size: 16px !important;
+  }
+}

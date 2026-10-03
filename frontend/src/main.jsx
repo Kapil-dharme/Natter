@@ -3,6 +3,20 @@ import { createRoot } from 'react-dom/client';
 import App from './App';
 import './index.css';
 
+['gesturestart', 'gesturechange', 'gestureend'].forEach(evt =>
+    document.addEventListener(evt, e => e.preventDefault())
+);
+
+document.addEventListener('wheel', e => {
+    if (e.ctrlKey) e.preventDefault();
+}, { passive: false });
+
+document.addEventListener('keydown', e => {
+    if ((e.ctrlKey || e.metaKey) && ['+', '-', '=', '0'].includes(e.key)) {
+        e.preventDefault();
+    }
+});
+
 let deferredInstallPrompt = null;
 
 window.addEventListener('beforeinstallprompt', (event) => {
@@ -46,7 +60,7 @@ window.installNatter = async () => {
 };
 
 createRoot(document.getElementById('root')).render(
-        <App />
+    <App />
 );
 
 //

@@ -26,7 +26,7 @@ const storage = new CloudinaryStorage({
 export const uploadImage = multer({
     storage,
     limits: {
-        fileSize: 25 * 1024 * 1024
+        fileSize: 10 * 1024 * 1024
     },
     fileFilter: (req, file, cb) => {
         if (file.mimetype.startsWith("image/")) {
@@ -41,7 +41,7 @@ export const uploadImage = multer({
 export const uploadFile = multer({
     storage,
     limits: {
-        fileSize: 50 * 1024 * 1024
+        fileSize: 10 * 1024 * 1024
     },
     fileFilter: (req, file, cb) => {
         if (file.mimetype === "application/pdf") {

@@ -2,8 +2,29 @@
 import { useState, useRef, useEffect } from 'react';
 import EmojiPickerPopup from './EmojiPicker';
 import styles from './MessageInput.module.css';
-import { Smile, Paperclip, Camera, X } from 'lucide-react';
+import { Smile, Paperclip, Camera, X, AlertCircle } from 'lucide-react';
 import { useAuth } from '../../context/AuthContext';
+
+const MB = 1024 * 1024;
+const MAX_IMAGE = 10 * MB;
+const MAX_FILE = 10 * MB;
+
+async function compressImage(file, maxDim = 2048, quality = 0.85) {
+  if (file.type === 'image/gif' || file.size < 2 * MB) return file;
+  try {
+    const bitmap = await createImageBitmap(file);
+    const scale = Math.min(1, maxDim / Math.max(bitmap.width, bitmap.height));
+    const canvas = document.createElement('canvas');
+    canvas.width = Math.round(bitmap.width * scale);
+    canvas.height = Math.round(bitmap.height * scale);
+    canvas.getContext('2d').drawImage(bitmap, 0, 0, canvas.width, canvas.height);
+    const blob = await new Promise(r => canvas.toBlob(r, 'image/jpeg', quality));
+    if (!blob || blob.size >= file.size) return file;
+    return new File([blob], file.name.replace(/\.\w+$/, '') + '.jpg', { type: 'image/jpeg' });
+  } catch {
+    return file;
+  }
+}
 
 export default function MessageInput({
   onSendText,
@@ -22,6 +43,17 @@ export default function MessageInput({
   const fileRef = useRef(null);
   const wrapRef = useRef(null);
   const textareaRef = useRef(null);
+
+  const [errorMsg, setErrorMsg] = useState('');
+  const errorTimer = useRef(null);
+
+  function showError(msg) {
+    setErrorMsg(msg);
+    clearTimeout(errorTimer.current);
+    errorTimer.current = setTimeout(() => setErrorMsg(''), 3500);
+  }
+
+  useEffect(() => () => clearTimeout(errorTimer.current), []);
 
 
   useEffect(() => {
@@ -88,31 +120,35 @@ export default function MessageInput({
   }
 
   async function handleImageChange(e) {
-    const file = e.target.files[0];
-
+    let file = e.target.files[0];
     if (!file) return;
 
     e.target.value = '';
     setShowAttach(false);
 
-    await onSendImage(
-      file,
-      replyingTo?._id || null
-    );
+    file = await compressImage(file);          // shrinks big photos first
+
+    if (file.size > MAX_IMAGE) {               // still too big: show the pop-up
+      showError(`Image is too large (${(file.size / MB).toFixed(1)} MB). Maximum is 10 MB.`);
+      return;
+    }
+
+    await onSendImage(file, replyingTo?._id || null);
   }
 
   async function handleFileChange(e) {
     const file = e.target.files[0];
-
     if (!file) return;
 
     e.target.value = '';
     setShowAttach(false);
 
-    await onSendFile(
-      file,
-      replyingTo?._id || null
-    );
+    if (file.size > MAX_FILE) {
+      showError(`File is too large (${(file.size / MB).toFixed(1)} MB). Maximum is 10 MB.`);
+      return;
+    }
+
+    await onSendFile(file, replyingTo?._id || null);
   }
 
   function getReplyPreview(message) {
@@ -160,6 +196,13 @@ export default function MessageInput({
       className={styles.wrap}
       ref={wrapRef}
     >
+
+      {errorMsg && (
+        <div className={styles.errorToast} role="alert">
+          <AlertCircle size={16} />
+          <span>{errorMsg}</span>
+        </div>
+      )}
 
       {showEmoji && (
         <EmojiPickerPopup
