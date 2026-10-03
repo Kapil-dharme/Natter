@@ -86,6 +86,7 @@ export default function ChatWindow({
   const [loadingOlder, setLoadingOlder] = useState(false);
   const [currentPage, setCurrentPage] = useState(1);
   const [unblocking, setUnblocking] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
   const bottomRef = useRef(null);
   const isNearBottom = useRef(true);
@@ -93,6 +94,8 @@ export default function ChatWindow({
   const readEmittedRef = useRef(new Set());
   const messageIdsRef = useRef(new Set());
   const shouldScrollAfterMessage = useRef(false);
+  const loadingOlderRef = useRef(false);
+  const restoreScrollRef = useRef(null);
 
   const isGroup = conversation.type === 'group';
 
@@ -160,9 +163,6 @@ export default function ChatWindow({
 
     const participants =
       conversation.participants || [];
-
-    console.log("participants raw:", JSON.stringify(participants));
-    console.log("current userId:", userId);
 
     const otherParticipant =
       participants.find(participant => {
@@ -351,12 +351,19 @@ export default function ChatWindow({
     decryptText
   ]);
 
+  const decryptRef = useRef(decryptIncomingMessage);
+
+  useEffect(() => {
+    decryptRef.current = decryptIncomingMessage;
+  }, [decryptIncomingMessage]);
+
   useEffect(() => {
     let cancelled = false;
 
     setLoading(true);
     setMessages([]);
     setCurrentPage(1);
+    setHasMore(true);
     setHasNewMessage(false);
 
     readEmittedRef.current = new Set();
@@ -378,10 +385,12 @@ export default function ChatWindow({
         const loadedMessages =
           (res.data.chatMessages || []).reverse();
 
+        setHasMore(loadedMessages.length >= 20);
+
         const decryptedMessages =
           await Promise.all(
             loadedMessages.map(message =>
-              decryptIncomingMessage(message)
+              decryptRef.current(message)
             )
           );
 
@@ -422,8 +431,7 @@ export default function ChatWindow({
       cancelled = true;
     };
   }, [
-    conversation._id,
-    decryptIncomingMessage
+    conversation._id
   ]);
 
   useLayoutEffect(() => {
@@ -695,6 +703,127 @@ export default function ChatWindow({
     handleMessageDeleted
   );
 
+  const loadOlderMessages = useCallback(async () => {
+    if (
+      loadingOlderRef.current ||
+      loadingOlder ||
+      loading ||
+      !hasMore
+    ) {
+      return;
+    }
+
+    const container =
+      messagesContainerRef.current;
+
+    if (!container) {
+      return;
+    }
+
+    loadingOlderRef.current = true;
+    setLoadingOlder(true);
+
+    const nextPage = currentPage + 1;
+
+    try {
+      const res = await api.get(
+        `/userChat/conversations/${conversation._id}/messages?page=${nextPage}&limit=20`
+      );
+
+      const olderMessages = [
+        ...(res.data.chatMessages || [])
+      ].reverse();
+
+      if (olderMessages.length < 20) {
+        setHasMore(false);
+      }
+
+      if (!olderMessages.length) {
+        return;
+      }
+
+      const decryptedOlder = await Promise.all(
+        olderMessages.map(message =>
+          decryptIncomingMessage(message)
+        )
+      );
+
+      restoreScrollRef.current = {
+        previousScrollHeight:
+          container.scrollHeight,
+        previousScrollTop:
+          container.scrollTop
+      };
+
+      setMessages(prev => {
+        const existingIds = new Set(
+          prev.map(message =>
+            String(message._id)
+          )
+        );
+
+        const freshMessages =
+          decryptedOlder.filter(
+            message =>
+              !existingIds.has(
+                String(message._id)
+              )
+          );
+
+        freshMessages.forEach(message => {
+          messageIdsRef.current.add(
+            String(message._id)
+          );
+        });
+
+        return [
+          ...freshMessages,
+          ...prev
+        ];
+      });
+
+      setCurrentPage(nextPage);
+    } catch (error) {
+      console.error(
+        "Failed to load older messages:",
+        error
+      );
+    } finally {
+      loadingOlderRef.current = false;
+      setLoadingOlder(false);
+    }
+  }, [
+    conversation._id,
+    currentPage,
+    hasMore,
+    loading,
+    loadingOlder,
+    decryptIncomingMessage
+  ]);
+
+  useLayoutEffect(() => {
+    const pending =
+      restoreScrollRef.current;
+
+    if (!pending) {
+      return;
+    }
+
+    restoreScrollRef.current = null;
+
+    const container =
+      messagesContainerRef.current;
+
+    if (!container) {
+      return;
+    }
+
+    container.scrollTop =
+      container.scrollHeight -
+      pending.previousScrollHeight +
+      pending.previousScrollTop;
+  }, [messages]);
+
   function handleScroll(e) {
     const container =
       e.currentTarget;
@@ -712,6 +841,10 @@ export default function ChatWindow({
 
     if (atBottom) {
       setHasNewMessage(false);
+    }
+
+    if (container.scrollTop <= container.clientHeight * 2) {
+      loadOlderMessages();
     }
   }
 
@@ -766,6 +899,9 @@ export default function ChatWindow({
     replyMessage = null
   ) {
     setHasNewMessage(false);
+
+    shouldScrollAfterMessage.current = true;
+    isNearBottom.current = true;
 
     const tempId =
       `tmp-${Date.now()}-${Math.random()}`;
@@ -1192,6 +1328,7 @@ export default function ChatWindow({
         new Set();
 
       setCurrentPage(1);
+      setHasMore(false);
       setHasNewMessage(false);
       isNearBottom.current = true;
       shouldScrollAfterMessage.current =
@@ -1293,10 +1430,11 @@ export default function ChatWindow({
       return;
     }
 
-    if (loadingOlder) {
+    if (loadingOlder || loadingOlderRef.current) {
       return;
     }
 
+    loadingOlderRef.current = true;
     setLoadingOlder(true);
 
     try {
@@ -1317,7 +1455,12 @@ export default function ChatWindow({
           [];
 
         if (!olderMessages.length) {
+          setHasMore(false);
           break;
+        }
+
+        if (olderMessages.length < 20) {
+          setHasMore(false);
         }
 
         const olderMessagesOrdered =
@@ -1407,6 +1550,7 @@ export default function ChatWindow({
         error
       );
     } finally {
+      loadingOlderRef.current = false;
       setLoadingOlder(false);
     }
   }
