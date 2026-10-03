@@ -126,10 +126,10 @@ export default function MessageInput({
     e.target.value = '';
     setShowAttach(false);
 
-    file = await compressImage(file);          // shrinks big photos first
+    file = await compressImage(file);
 
-    if (file.size > MAX_IMAGE) {               // still too big: show the pop-up
-      showError(`Image is too large (${(file.size / MB).toFixed(1)} MB). Maximum is 10 MB.`);
+    if (file.size > MAX_IMAGE) {
+      showError(`Image too large (${(file.size / MB).toFixed(1)} MB). Max 10 MB.`);
       return;
     }
 
@@ -144,7 +144,7 @@ export default function MessageInput({
     setShowAttach(false);
 
     if (file.size > MAX_FILE) {
-      showError(`File is too large (${(file.size / MB).toFixed(1)} MB). Maximum is 10 MB.`);
+        showError(`File too large (${(file.size / MB).toFixed(1)} MB). Max 10 MB.`);
       return;
     }
 
