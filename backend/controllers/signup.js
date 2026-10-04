@@ -1,8 +1,8 @@
-
 import { User } from "../model/user.js";
 import bcrypt from "bcrypt";
 import crypto from "crypto";
 import { sendOTP } from "../utils/nodemailer.js";
+import { validateUsername } from "../utils/username.js";
 
 const normalizeEmail = (email) => email.trim().toLowerCase();
 
@@ -21,8 +21,17 @@ export const signupUser = async (req, res) => {
             });
         }
 
+        const usernameResult = validateUsername(userName);
+
+        if (!usernameResult.ok) {
+            return res.status(400).json({
+                message: usernameResult.message
+            });
+        }
+
+        const normalizedUsername = usernameResult.username;
+        const usernameKey = usernameResult.key;
         const normalizedEmail = normalizeEmail(email);
-        const normalizedUsername = userName.trim();
 
         if (!isValidEmail(normalizedEmail)) {
             return res.status(400).json({
@@ -41,7 +50,7 @@ export const signupUser = async (req, res) => {
         });
 
         const existingUsername = await User.findOne({
-            userName: normalizedUsername
+            usernameKey
         });
 
         if (existingUser) {
@@ -70,6 +79,7 @@ export const signupUser = async (req, res) => {
             const lastOtpSentAt = new Date();
 
             existingUser.userName = normalizedUsername;
+            existingUser.usernameKey = usernameKey;
             existingUser.email = normalizedEmail;
             existingUser.password = hashedPassword;
             existingUser.OTP = OTP;
@@ -106,8 +116,9 @@ export const signupUser = async (req, res) => {
         );
         const lastOtpSentAt = new Date();
 
-        const user = await User.create({
+        await User.create({
             userName: normalizedUsername,
+            usernameKey,
             email: normalizedEmail,
             password: hashedPassword,
             profileURL: profileURL,
@@ -134,7 +145,7 @@ export const signupUser = async (req, res) => {
                 });
             }
 
-            if (error.keyPattern?.userName) {
+            if (error.keyPattern?.userName || error.keyPattern?.usernameKey) {
                 return res.status(409).json({
                     message: "Username already taken"
                 });
@@ -158,4 +169,3 @@ export const signupUser = async (req, res) => {
         });
     }
 };
-

@@ -62,6 +62,10 @@ const userSchema = new mongoose.Schema({
         expires: 0
     },
 
+    usernameKey: { type: String, required: true, unique: true },
+
+    usernameChangedAt: { type: Date },
+
     lastOtpSentAt: {
         type: Date,
         default: null

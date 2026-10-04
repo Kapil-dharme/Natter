@@ -136,6 +136,12 @@ export default function ProfileModal({ onClose }) {
 
     async function handleSave() {
         setError('');
+        const nameUnchanged = userName.trim() === (user?.userName || '');
+
+        if (nameUnchanged && !file) {
+            onClose();
+            return;
+        }
         setLoading(true);
 
         try {
@@ -302,12 +308,18 @@ export default function ProfileModal({ onClose }) {
                             color: 'var(--text-secondary)'
                         }}
                     >
-                        Username
+                        Username{'  '} :-
+                        <span style={{ fontSize: 11 ,color:'#2563eb'}}>
+                            (can be changed once every 30 days)
+                        </span>
                     </label>
 
                     <input
                         value={userName}
-                        onChange={e => setUserName(e.target.value)}
+                        onChange={e => {
+                            setUserName(e.target.value);
+                            setError('');
+                        }}
                         style={{
                             padding: '10px 12px',
                             borderRadius: 'var(--radius-sm)',
